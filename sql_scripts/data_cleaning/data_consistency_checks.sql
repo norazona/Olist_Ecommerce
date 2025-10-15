@@ -61,40 +61,6 @@ FROM orders;
 SELECT DISTINCT product_category_name
 FROM products;
 
--- Delete the rows with no product_category_name from orders table
-DELETE
-FROM orders
-WHERE order_id IN (
-  SELECT o.order_id
-FROM products p
-JOIN order_items oi ON
-p.product_id = oi.product_id
-JOIN orders o ON
-oi.order_id = o.order_id
-WHERE p.product_category_name = ''
-);
-
--- Delete the rows with no product_category_name from order_items table 
--- (had no referential integrity set in the foreign key)
-DELETE
-FROM order_items
-WHERE order_id IN (
-	SELECT oi.order_id
---p.product_id
-FROM products p
-JOIN order_items oi ON
-p.product_id = oi.product_id
-WHERE p.product_category_name = ''
-);
-
--- Delete the rows with no product_category_name from products table 
-DELETE
-FROM products
-WHERE product_id IN (
-	SELECT product_id
-FROM products
-WHERE product_category_name = ''
-);
 
 
 
